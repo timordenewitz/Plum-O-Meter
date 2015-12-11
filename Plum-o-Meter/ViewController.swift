@@ -8,12 +8,17 @@
 
 import UIKit
 
+
+
 class ViewController: UIViewController
 {
     
     let label = UILabel()
     
+    var lastMovedForce :CGFloat = 0
+    
     var circles = [UITouch: CircleWithLabel]()
+    
     
     override func viewDidLoad()
     {
@@ -46,6 +51,7 @@ class ViewController: UIViewController
         highlightHeaviest()
     }
     
+    
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?)
     {
         for touch in touches where circles[touch] != nil
@@ -54,6 +60,18 @@ class ViewController: UIViewController
             
             circle.drawAtPoint(touch.locationInView(view),
                 force: touch.force / touch.maximumPossibleForce)
+            if(touch.force < 1) {
+                self.view.backgroundColor = UIColor.redColor()
+            }
+            if(touch.force > 1 && touch.force < 5) {
+                self.view.backgroundColor = UIColor.greenColor()
+
+            }
+            if (touch.force > 5) {
+                self.view.backgroundColor = UIColor.yellowColor()
+
+            }
+            lastMovedForce = touch.force
         }
         
         highlightHeaviest()
@@ -67,6 +85,7 @@ class ViewController: UIViewController
             
             circles.removeValueForKey(touch)
             circle.removeFromSuperlayer()
+            
         }
         
         highlightHeaviest()
@@ -148,13 +167,13 @@ class CircleWithLabel: CAShapeLayer
     {
         didSet
         {
-            fillColor = isMax ? UIColor.yellowColor().CGColor : nil
+            fillColor = isMax ? UIColor.greenColor().CGColor : nil
         }
     }
     
     func drawAtPoint(location: CGPoint, force: CGFloat)
     {
-        let radius = 120 + (force * 120)
+        let radius = 30 + (force * 120)
         
         path = UIBezierPath(
             ovalInRect: CGRect(
