@@ -19,6 +19,9 @@ class ViewController: UIViewController
     
     var circles = [UITouch: CircleWithLabel]()
     
+    let deepPressableButton = DeepPressableButton(type: UIButtonType.System)
+
+    @IBOutlet var forceButton: UIButton!
     
     override func viewDidLoad()
     {
@@ -26,85 +29,101 @@ class ViewController: UIViewController
         
         view.multipleTouchEnabled = true
         
-        label.text = "lay your plums on me."
+        label.text = "Change the Background color!"
         
         label.textAlignment = NSTextAlignment.Center
         
         view.addSubview(label)
-    }
-    
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?)
-    {
-        label.hidden = true
-        
-        for touch in touches
-        {
-            let circle = CircleWithLabel()
-            
-            circle.drawAtPoint(touch.locationInView(view),
-                force: touch.force / touch.maximumPossibleForce)
-            
-            circles[touch] = circle
-            view.layer.addSublayer(circle)
-        }
-        
-        highlightHeaviest()
-    }
-    
-    
-    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?)
-    {
-        for touch in touches where circles[touch] != nil
-        {
-            let circle = circles[touch]!
-            
-            circle.drawAtPoint(touch.locationInView(view),
-                force: touch.force / touch.maximumPossibleForce)
-            if(touch.force < 1) {
-                self.view.backgroundColor = UIColor.redColor()
-            }
-            if(touch.force > 1 && touch.force < 5) {
-                self.view.backgroundColor = UIColor.greenColor()
 
-            }
-            if (touch.force > 5) {
-                self.view.backgroundColor = UIColor.yellowColor()
-
-            }
-            lastMovedForce = touch.force
-        }
+        let deepPressGestureRecognizer = DeepPressGestureRecognizer(target: self, action: "deepPressHandler:", threshold: 0.1)
         
-        highlightHeaviest()
+        forceButton.addGestureRecognizer(deepPressGestureRecognizer)
+        
     }
     
-    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?)
+    func deepPressHandler(value: DeepPressGestureRecognizer)
     {
-        for touch in touches where circles[touch] != nil
+        if value.state == UIGestureRecognizerState.Began
         {
-            let circle = circles[touch]!
-            
-            circles.removeValueForKey(touch)
-            circle.removeFromSuperlayer()
-            
+            print("deep press begin: ", value.view?.description)
         }
-        
-        highlightHeaviest()
+        else if value.state == UIGestureRecognizerState.Ended
+        {
+            print("deep press ends.")
+        }
     }
     
-    override func touchesCancelled(touches: Set<UITouch>?, withEvent event: UIEvent?)
-    {
-        guard let touches = touches else
-        {
-            return
-        }
-        
-        for touch in touches where circles[touch] != nil
-        {
-            let circle = circles[touch]!
-            
-            circle.removeFromSuperlayer()
-        }
-    }
+//    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?)
+//    {
+//        label.hidden = true
+//        
+//        for touch in touches
+//        {
+//            let circle = CircleWithLabel()
+//            
+//            circle.drawAtPoint(touch.locationInView(view),
+//                force: touch.force / touch.maximumPossibleForce)
+//            
+//            circles[touch] = circle
+//            view.layer.addSublayer(circle)
+//        }
+//        
+//        highlightHeaviest()
+//    }
+//    
+//    
+//    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?)
+//    {
+//        for touch in touches where circles[touch] != nil
+//        {
+//            let circle = circles[touch]!
+//            
+//            circle.drawAtPoint(touch.locationInView(view),
+//                force: touch.force / touch.maximumPossibleForce)
+//            if(touch.force < 1) {
+//                self.view.backgroundColor = UIColor.redColor()
+//            }
+//            if(touch.force > 1 && touch.force < 5) {
+//                self.view.backgroundColor = UIColor.greenColor()
+//
+//            }
+//            if (touch.force > 5) {
+//                self.view.backgroundColor = UIColor.yellowColor()
+//            }
+//            lastMovedForce = touch.force
+//        }
+//        
+//        highlightHeaviest()
+//    }
+//    
+//    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?)
+//    {
+//        for touch in touches where circles[touch] != nil
+//        {
+//            let circle = circles[touch]!
+//            
+//            circles.removeValueForKey(touch)
+//            circle.removeFromSuperlayer()
+//            
+//        }
+//        
+//        highlightHeaviest()
+//    }
+//    
+//    override func touchesCancelled(touches: Set<UITouch>?, withEvent event: UIEvent?)
+//    {
+//        guard let touches = touches else
+//        {
+//            return
+//        }
+//        
+//        for touch in touches where circles[touch] != nil
+//        {
+//            let circle = circles[touch]!
+//            
+//            circle.removeFromSuperlayer()
+//        }
+//    }
     
     func highlightHeaviest()
     {
@@ -194,4 +213,9 @@ extension CGPoint
     {
         return CGPoint(x: self.x - dx, y: self.y - dy)
     }
+}
+
+class DeepPressableButton: UIButton, DeepPressable
+{
+    
 }
