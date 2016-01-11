@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -22,15 +23,22 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="23"/>
                                 <state key="normal" title="Change Color"/>
                             </button>
+                            <slider opaque="NO" contentMode="scaleToFill" restorationIdentifier="mySlider" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="AyO-6w-N3d">
+                                <rect key="frame" x="29" y="292" width="524" height="31"/>
+                            </slider>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="AyO-6w-N3d" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="272" id="1Zt-8z-CzQ"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="caW-S2-vMe" secondAttribute="bottom" constant="96" id="ecF-xj-Koo"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="AyO-6w-N3d" secondAttribute="trailing" constant="29" id="rwj-hF-Mgx"/>
                             <constraint firstItem="caW-S2-vMe" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="vne-Pp-Orq"/>
+                            <constraint firstItem="AyO-6w-N3d" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="11" id="y6P-Xe-oX0"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="forceButton" destination="caW-S2-vMe" id="ZmY-Vh-ygD"/>
+                        <outlet property="slider" destination="AyO-6w-N3d" id="ZbI-h2-yZg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

@@ -16,6 +16,8 @@ class DeepPressGestureRecognizer: UIGestureRecognizer
 {
     var vibrateOnDeepPress = true
     let threshold: CGFloat
+    var i: Int = 0;
+    var touchArray = [CGFloat]()
     
     private let pulse = PulseLayer()
     private var deepPressed: Bool = false
@@ -59,40 +61,17 @@ class DeepPressGestureRecognizer: UIGestureRecognizer
         {
             return
         }
-        
-        let ratio = (touch.force / touch.maximumPossibleForce)
-        
-        if ratio >= 0.1 && ratio < 0.3
-        {
-            state = UIGestureRecognizerState.Began
-            target.view.backgroundColor = UIColor.redColor()
-            deepPressed = false
-        }
-        
-        if ratio >= 0.3 && ratio < 0.7
-        {
-            state = UIGestureRecognizerState.Began
-
-            target.view.backgroundColor = UIColor.greenColor()
-            deepPressed = false
-        }
-            
-        if !deepPressed && ratio >= 0.7
-        {
-            state = UIGestureRecognizerState.Began
-            
-            if vibrateOnDeepPress
-            {
-                AudioServicesPlayAlertSound(kSystemSoundID_Vibrate)
+        for case let slider as UISlider in target.view.subviews {
+            touchArray.insert(touch.force, atIndex: i)
+            guard touchArray.count > 5 else {
+                slider.value = Float(touchArray[i]/touch.maximumPossibleForce)
+                print(Float(touchArray[i]/touch.maximumPossibleForce))
+                i++
+                return
             }
-            target.view.backgroundColor = UIColor.yellowColor()
-            deepPressed = true
-        }
-        else if deepPressed && (touch.force / touch.maximumPossibleForce) < threshold
-        {
-            state = UIGestureRecognizerState.Ended
-            
-            deepPressed = false
+            slider.value = Float(touchArray[i-5]/touch.maximumPossibleForce)
+            print(Float(touchArray[i-5]/touch.maximumPossibleForce))
+            i++
         }
     }
 }

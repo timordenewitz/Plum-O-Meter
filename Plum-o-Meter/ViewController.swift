@@ -8,8 +8,6 @@
 
 import UIKit
 
-
-
 class ViewController: UIViewController
 {
     
@@ -20,8 +18,13 @@ class ViewController: UIViewController
     var circles = [UITouch: CircleWithLabel]()
     
     let deepPressableButton = DeepPressableButton(type: UIButtonType.System)
+    
+    var i: Int = 0
+    
+    var touched = [CGFloat]()
 
     @IBOutlet var forceButton: UIButton!
+    @IBOutlet var slider: UISlider!
     
     override func viewDidLoad()
     {
@@ -35,7 +38,7 @@ class ViewController: UIViewController
         
         view.addSubview(label)
 
-        let deepPressGestureRecognizer = DeepPressGestureRecognizer(target: self, action: "deepPressHandler:", threshold: 0.1)
+        let deepPressGestureRecognizer = DeepPressGestureRecognizer(target: self, action: "deepPressHandler:", threshold: 0.0)
         
         forceButton.addGestureRecognizer(deepPressGestureRecognizer)
         
@@ -45,11 +48,9 @@ class ViewController: UIViewController
     {
         if value.state == UIGestureRecognizerState.Began
         {
-            print("deep press begin: ", value.view?.description)
         }
         else if value.state == UIGestureRecognizerState.Ended
         {
-            print("deep press ends.")
         }
     }
     
