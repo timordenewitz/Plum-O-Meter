@@ -9,23 +9,22 @@
 
 import AudioToolbox
 import UIKit.UIGestureRecognizerSubclass
+import QorumLogs
+
 
 // MARK: GestureRecognizer
 
 class DeepPressGestureRecognizer: UIGestureRecognizer
 {
     var vibrateOnDeepPress = true
-    let threshold: CGFloat
-    var i: Int = 0;
-    var touchArray = [CGFloat]()
     
-    private let pulse = PulseLayer()
-    private var deepPressed: Bool = false
     private var target : UIViewController
+    private var _force: CGFloat = 0.0
+    
+    internal var force: CGFloat {get {return _force}}
     
     required init(target: AnyObject?, action: Selector, threshold: CGFloat)
     {
-        self.threshold = threshold
         self.target = target as! UIViewController
         super.init(target: target, action: action)
     }
@@ -34,7 +33,7 @@ class DeepPressGestureRecognizer: UIGestureRecognizer
     {
         if let touch = touches.first
         {
-            handleTouch(touch)
+            handleTouch(.Began,touch: touch)
         }
     }
     
@@ -42,121 +41,32 @@ class DeepPressGestureRecognizer: UIGestureRecognizer
     {
         if let touch = touches.first
         {
-            handleTouch(touch)
+            handleTouch(.Changed,touch: touch)
         }
     }
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent)
     {
         super.touchesEnded(touches, withEvent: event)
-        
-        state = deepPressed ? UIGestureRecognizerState.Ended : UIGestureRecognizerState.Failed
-        
-        deepPressed = false
+        if let touch = touches.first
+        {
+            handleTouch(.Ended,touch: touch)
+        }
     }
     
-    private func handleTouch(touch: UITouch)
+    private func handleTouch(state: UIGestureRecognizerState, touch: UITouch)
     {
-        guard touch.force != 0 && touch.maximumPossibleForce != 0 else
-        {
-            return
-        }
-        for case let slider as UISlider in target.view.subviews {
-            touchArray.insert(touch.force, atIndex: i)
-            guard touchArray.count > 5 else {
-                slider.value = Float(touchArray[i]/touch.maximumPossibleForce)
-                print(Float(touchArray[i]/touch.maximumPossibleForce))
-                i++
-                return
-            }
-            slider.value = Float(touchArray[i-5]/touch.maximumPossibleForce)
-            print(Float(touchArray[i-5]/touch.maximumPossibleForce))
-            i++
-        }
+        self.state = state
+        
+        _force = touch.force / touch.maximumPossibleForce
+    }
+    
+    
+    //This function is called automatically by UIGestureRecognizer when our state is set to .Ended. We want to use this function to reset our internal state.
+    internal override func reset() {
+        super.reset()
+        
+        _force = 0.0
     }
 }
 
-// MARK: DeepPressable protocol extension
-
-protocol DeepPressable
-{
-    var gestureRecognizers: [UIGestureRecognizer]? {get set}
-    
-    func addGestureRecognizer(gestureRecognizer: UIGestureRecognizer)
-    func removeGestureRecognizer(gestureRecognizer: UIGestureRecognizer)
-    
-    func setDeepPressAction(target: AnyObject, action: Selector)
-    func removeDeepPressAction()
-}
-
-extension DeepPressable
-{
-    func setDeepPressAction(target: AnyObject, action: Selector)
-    {
-        let deepPressGestureRecognizer = DeepPressGestureRecognizer(target: target, action: action, threshold: 0.75)
-        
-        self.addGestureRecognizer(deepPressGestureRecognizer)
-    }
-    
-    func removeDeepPressAction()
-    {
-        guard let gestureRecognizers = gestureRecognizers else
-        {
-            return
-        }
-        
-        for recogniser in gestureRecognizers where recogniser is DeepPressGestureRecognizer
-        {
-            removeGestureRecognizer(recogniser)
-        }
-    }
-}
-
-// MARK: PulseLayer
-
-// Thanks to http://jamesonquave.com/blog/fun-with-cashapelayer/
-
-class PulseLayer: CAShapeLayer
-{
-    var pulseColor: CGColorRef = UIColor.redColor().CGColor
-    
-    func pulse(frame: CGRect)
-    {
-        strokeColor = pulseColor
-        fillColor = nil
-        
-        let startPath = UIBezierPath(roundedRect: frame, cornerRadius: 5).CGPath
-        let endPath = UIBezierPath(roundedRect: frame.insetBy(dx: -50, dy: -50), cornerRadius: 5).CGPath
-        
-        path = startPath
-        lineWidth = 1
-        
-        let pathAnimation = CABasicAnimation(keyPath: "path")
-        pathAnimation.toValue = endPath
-        
-        let opacityAnimation = CABasicAnimation(keyPath: "opacity")
-        opacityAnimation.toValue = 0
-        
-        let lineWidthAnimation = CABasicAnimation(keyPath: "lineWidth")
-        lineWidthAnimation.toValue = 10
-        
-        CATransaction.begin()
-        
-        CATransaction.setCompletionBlock
-        {
-            self.removeFromSuperlayer()
-        }
-        
-        for animation in [pathAnimation, opacityAnimation, lineWidthAnimation]
-        {
-            animation.duration = 0.25
-            animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
-            animation.removedOnCompletion = false
-            animation.fillMode = kCAFillModeForwards
-            
-            addAnimation(animation, forKey: animation.keyPath)
-        }
-        
-        CATransaction.commit()
-    }
-}
