@@ -18,6 +18,10 @@ class ViewController: UIViewController
     var touchArray = [CGFloat]()
     var targetValues = [10, 20, 30, 40, 50, 60, 70, 80, 90]
     
+    var userAge :String = ""
+    var userHanded :String = ""
+    var used3DTouch :Bool = false
+    
     var startTime: CFAbsoluteTime!
 
     @IBOutlet var forceButton: UIButton!
@@ -36,7 +40,7 @@ class ViewController: UIViewController
     }
     
     override func viewDidAppear(animated: Bool) {
-        let alert = UIAlertController(title: "Willkommen", message: "Hier musst du durch Druck auf den Change Value Button versuchen die 2 Anzeigen auf den Gleichen Wert zu bringen!", preferredStyle: UIAlertControllerStyle.Alert)
+        let alert = UIAlertController(title: "Welcome", message: "Hier musst du durch Druck auf den Change Value Button versuchen die 2 Anzeigen auf den Gleichen Wert zu bringen!", preferredStyle: UIAlertControllerStyle.Alert)
         alert.addAction(UIAlertAction(title: "All right", style: UIAlertActionStyle.Default, handler: nil))
         self.presentViewController(alert, animated: true, completion: nil)
         targetValueLabel.text = String(targetValues.first!) + "%"
@@ -56,7 +60,7 @@ class ViewController: UIViewController
                 i++
                 return
             }
-            sliderValueLabel.text = String(forceRoundingCGFloat((touchArray[i-5]))) + "%"
+            sliderValueLabel.text = String(forceRoundingCGFloat((touchArray[i-7]))) + "%"
             i++
         }
         
@@ -66,14 +70,17 @@ class ViewController: UIViewController
                 QL2(timeRounding(elapsedTime), force: String(forceRoundingCGFloat(touchArray[i-1])))
                 return
             }
-            QorumOnlineLogs.extraInformation["targetValue"] = targetValueLabel.text;
+            QorumOnlineLogs.extraInformation["targetValue"] = targetValueLabel.text
+            QorumOnlineLogs.extraInformation["age"] = userAge
+            QorumOnlineLogs.extraInformation["handed"] = userHanded
+
             if (targetValueLabel.text == sliderValueLabel.text) {
-                QorumOnlineLogs.extraInformation["matchedTargetValue"] = "true";
+                QorumOnlineLogs.extraInformation["matchedTargetValue"] = "true"
             }
             else {
-                QorumOnlineLogs.extraInformation["matchedTargetValue"] = "false";
+                QorumOnlineLogs.extraInformation["matchedTargetValue"] = "false"
             }
-            QL2(timeRounding(elapsedTime), force: String(forceRoundingCGFloat(touchArray[i-6])))
+            QL2(timeRounding(elapsedTime), force: String(forceRoundingCGFloat(touchArray[i-8])))
             roundCounter++
             if (roundCounter < 10) {
                 showNextAlert()
@@ -99,7 +106,7 @@ class ViewController: UIViewController
     }
     
     func showNextAlert() {
-        let alert = UIAlertController(title: "Runde" + String(roundCounter), message: "Und noch mal! Bald hast dus geschafft!", preferredStyle: UIAlertControllerStyle.Alert)
+        let alert = UIAlertController(title: "Runde" + String(roundCounter), message: "Und noch mal — Bald hast dus geschafft!", preferredStyle: UIAlertControllerStyle.Alert)
         alert.addAction(UIAlertAction(title: "Okay, weiter!", style: UIAlertActionStyle.Default, handler: nil))
         self.presentViewController(alert, animated: true, completion: nil)
         targetValueLabel.text = String(targetValues.first!) + "%"
