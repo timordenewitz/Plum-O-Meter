@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "3ECBB7CE1BDBB8AA00328B67"
-               BuildableName = "Plum-o-Meter.app"
-               BlueprintName = "Plum-o-Meter"
-               ReferencedContainer = "container:Plum-o-Meter.xcodeproj">
+               BuildableName = "PressureTest.app"
+               BlueprintName = "PressureTest"
+               ReferencedContainer = "container:PressureTest.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "3ECBB7CE1BDBB8AA00328B67"
-            BuildableName = "Plum-o-Meter.app"
-            BlueprintName = "Plum-o-Meter"
-            ReferencedContainer = "container:Plum-o-Meter.xcodeproj">
+            BuildableName = "PressureTest.app"
+            BlueprintName = "PressureTest"
+            ReferencedContainer = "container:PressureTest.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -56,9 +56,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "3ECBB7CE1BDBB8AA00328B67"
-            BuildableName = "Plum-o-Meter.app"
-            BlueprintName = "Plum-o-Meter"
-            ReferencedContainer = "container:Plum-o-Meter.xcodeproj">
+            BuildableName = "PressureTest.app"
+            BlueprintName = "PressureTest"
+            ReferencedContainer = "container:PressureTest.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -75,9 +75,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "3ECBB7CE1BDBB8AA00328B67"
-            BuildableName = "Plum-o-Meter.app"
-            BlueprintName = "Plum-o-Meter"
-            ReferencedContainer = "container:Plum-o-Meter.xcodeproj">
+            BuildableName = "PressureTest.app"
+            BlueprintName = "PressureTest"
+            ReferencedContainer = "container:PressureTest.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

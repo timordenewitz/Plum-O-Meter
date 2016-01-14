@@ -8,17 +8,21 @@
 
 import UIKit
 import QorumLogs
+import Foundation
+
 
 class ViewController: UIViewController
 {
-    var i: Int = 0;
+    var i: Int = 0
+    var roundCounter :Int = 1
     var touchArray = [CGFloat]()
+    var targetValues = [10, 20, 30, 40, 50, 60, 70, 80, 90]
     
     var startTime: CFAbsoluteTime!
 
     @IBOutlet var forceButton: UIButton!
-    @IBOutlet var slider: UISlider!
     @IBOutlet var sliderValueLabel: UILabel!
+    @IBOutlet var targetValueLabel: UILabel!
 
     override func viewDidLoad()
     {
@@ -32,9 +36,11 @@ class ViewController: UIViewController
     }
     
     override func viewDidAppear(animated: Bool) {
-        let alert = UIAlertController(title: "Willkommen", message: "Hier musst du den Slider mit Druck auf den gewünschten Wert einstellen! Drück auf den Change Value Button um den Wert des Sliders zu ändern!", preferredStyle: UIAlertControllerStyle.Alert)
+        let alert = UIAlertController(title: "Willkommen", message: "Hier musst du durch Druck auf den Change Value Button versuchen die 2 Anzeigen auf den Gleichen Wert zu bringen!", preferredStyle: UIAlertControllerStyle.Alert)
         alert.addAction(UIAlertAction(title: "All right", style: UIAlertActionStyle.Default, handler: nil))
         self.presentViewController(alert, animated: true, completion: nil)
+        targetValueLabel.text = String(targetValues.first!) + "%"
+        targetValues.removeFirst(1)
     }
     
     func deepPressHandler(recognizer: DeepPressGestureRecognizer)
@@ -46,23 +52,34 @@ class ViewController: UIViewController
         if(recognizer.state == .Changed) {
             touchArray.insert(recognizer.force, atIndex: i)
             guard touchArray.count > 5 else {
-                slider.value = Float(touchArray[i])
-                sliderValueLabel.text = String(slider.value * 100) + "%"
+                sliderValueLabel.text = String(forceRoundingCGFloat((touchArray[i]))) + "%"
                 i++
                 return
             }
-            slider.value = Float(touchArray[i-5])
-            sliderValueLabel.text = String(slider.value * 100) + "%"
+            sliderValueLabel.text = String(forceRoundingCGFloat((touchArray[i-5]))) + "%"
             i++
         }
         
         if(recognizer.state == .Ended) {
             let elapsedTime = CFAbsoluteTimeGetCurrent() - startTime
             guard touchArray.count > 6 else {
-                QL2(timeRounding(elapsedTime), force: String(touchArray[i-1]*100))
+                QL2(timeRounding(elapsedTime), force: String(forceRoundingCGFloat(touchArray[i-1])))
                 return
             }
-            QL2(timeRounding(elapsedTime), force: String(touchArray[i-6]*100))
+            QorumOnlineLogs.extraInformation["targetValue"] = targetValueLabel.text;
+            if (targetValueLabel.text == sliderValueLabel.text) {
+                QorumOnlineLogs.extraInformation["matchedTargetValue"] = "true";
+            }
+            else {
+                QorumOnlineLogs.extraInformation["matchedTargetValue"] = "false";
+            }
+            QL2(timeRounding(elapsedTime), force: String(forceRoundingCGFloat(touchArray[i-6])))
+            roundCounter++
+            if (roundCounter < 10) {
+                showNextAlert()
+                return
+            }
+            showFinalAlert()
         }
     }
     
@@ -70,8 +87,31 @@ class ViewController: UIViewController
         let numberOfPlaces = 2.0
         let multiplier = pow(10.0, numberOfPlaces)
         let rounded = round(time * multiplier) / multiplier
-        print(rounded)
         return String(rounded)
+    }
+    
+    func forceRoundingCGFloat(force : CGFloat) -> Int {
+        let numberOfPlaces = 2.0
+        let doubleTime = Double(force)
+        let multiplier = pow(10.0, numberOfPlaces)
+        let rounded = round(doubleTime * multiplier) / multiplier
+        return Int(rounded*100)
+    }
+    
+    func showNextAlert() {
+        let alert = UIAlertController(title: "Runde" + String(roundCounter), message: "Und noch mal! Bald hast dus geschafft!", preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "Okay, weiter!", style: UIAlertActionStyle.Default, handler: nil))
+        self.presentViewController(alert, animated: true, completion: nil)
+        targetValueLabel.text = String(targetValues.first!) + "%"
+        targetValues.removeFirst(1)
+    }
+    
+    func showFinalAlert() {
+        let alert = UIAlertController(title: "Vorbei!", message: "Vielen Dank fürs Mitmachen!", preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "Cool!", style: UIAlertActionStyle.Default, handler: nil))
+        self.presentViewController(alert, animated: true, completion: nil)
+        targetValueLabel.text = "---"
+        sliderValueLabel.text = "---"
     }
     
     override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask

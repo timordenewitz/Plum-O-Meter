@@ -2,7 +2,7 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:Plum-o-Meter.xcodeproj">
+      location = "group:/Users/timordenewitz/Scandio/Repositories/my3DTouch/PressureTest.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">

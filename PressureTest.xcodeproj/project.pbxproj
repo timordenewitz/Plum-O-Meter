@@ -17,7 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		3ECBB7CF1BDBB8AA00328B67 /* Plum-o-Meter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Plum-o-Meter.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3ECBB7CF1BDBB8AA00328B67 /* PressureTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PressureTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3ECBB7D21BDBB8AA00328B67 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3ECBB7D41BDBB8AA00328B67 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		3ECBB7D71BDBB8AA00328B67 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -45,7 +45,7 @@
 		3ECBB7C61BDBB8AA00328B67 = {
 			isa = PBXGroup;
 			children = (
-				3ECBB7D11BDBB8AA00328B67 /* Plum-o-Meter */,
+				3ECBB7D11BDBB8AA00328B67 /* PressureTest */,
 				3ECBB7D01BDBB8AA00328B67 /* Products */,
 				77CE4631122E5FE90A90F7FB /* Pods */,
 				9A2D64E93202751C48D9B724 /* Frameworks */,
@@ -55,12 +55,12 @@
 		3ECBB7D01BDBB8AA00328B67 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				3ECBB7CF1BDBB8AA00328B67 /* Plum-o-Meter.app */,
+				3ECBB7CF1BDBB8AA00328B67 /* PressureTest.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		3ECBB7D11BDBB8AA00328B67 /* Plum-o-Meter */ = {
+		3ECBB7D11BDBB8AA00328B67 /* PressureTest */ = {
 			isa = PBXGroup;
 			children = (
 				A5AF57961C1B22A80063DD79 /* deepForce */,
@@ -71,6 +71,7 @@
 				3ECBB7DB1BDBB8AA00328B67 /* LaunchScreen.storyboard */,
 				3ECBB7DE1BDBB8AA00328B67 /* Info.plist */,
 			);
+			name = PressureTest;
 			path = "Plum-o-Meter";
 			sourceTree = "<group>";
 		};
@@ -102,9 +103,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		3ECBB7CE1BDBB8AA00328B67 /* Plum-o-Meter */ = {
+		3ECBB7CE1BDBB8AA00328B67 /* PressureTest */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 3ECBB7E11BDBB8AA00328B67 /* Build configuration list for PBXNativeTarget "Plum-o-Meter" */;
+			buildConfigurationList = 3ECBB7E11BDBB8AA00328B67 /* Build configuration list for PBXNativeTarget "PressureTest" */;
 			buildPhases = (
 				A4C45766816524C3145C7070 /* Check Pods Manifest.lock */,
 				3ECBB7CB1BDBB8AA00328B67 /* Sources */,
@@ -117,9 +118,9 @@
 			);
 			dependencies = (
 			);
-			name = "Plum-o-Meter";
+			name = PressureTest;
 			productName = "Plum-o-Meter";
-			productReference = 3ECBB7CF1BDBB8AA00328B67 /* Plum-o-Meter.app */;
+			productReference = 3ECBB7CF1BDBB8AA00328B67 /* PressureTest.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -143,7 +144,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 3ECBB7CA1BDBB8AA00328B67 /* Build configuration list for PBXProject "Plum-o-Meter" */;
+			buildConfigurationList = 3ECBB7CA1BDBB8AA00328B67 /* Build configuration list for PBXProject "PressureTest" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -156,7 +157,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				3ECBB7CE1BDBB8AA00328B67 /* Plum-o-Meter */,
+				3ECBB7CE1BDBB8AA00328B67 /* PressureTest */,
 			);
 		};
 /* End PBXProject section */
@@ -348,8 +349,8 @@
 				INFOPLIST_FILE = "Plum-o-Meter/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "uk.co.flexmonkey.Plum-o-Meter";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = de.scandio.PressureTest;
+				PRODUCT_NAME = PressureTest;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -365,8 +366,8 @@
 				INFOPLIST_FILE = "Plum-o-Meter/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "uk.co.flexmonkey.Plum-o-Meter";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = de.scandio.PressureTest;
+				PRODUCT_NAME = PressureTest;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -375,7 +376,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		3ECBB7CA1BDBB8AA00328B67 /* Build configuration list for PBXProject "Plum-o-Meter" */ = {
+		3ECBB7CA1BDBB8AA00328B67 /* Build configuration list for PBXProject "PressureTest" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3ECBB7DF1BDBB8AA00328B67 /* Debug */,
@@ -384,7 +385,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		3ECBB7E11BDBB8AA00328B67 /* Build configuration list for PBXNativeTarget "Plum-o-Meter" */ = {
+		3ECBB7E11BDBB8AA00328B67 /* Build configuration list for PBXNativeTarget "PressureTest" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3ECBB7E21BDBB8AA00328B67 /* Debug */,
