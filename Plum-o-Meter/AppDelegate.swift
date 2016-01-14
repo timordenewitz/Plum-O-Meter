@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         QorumOnlineLogs.setupOnlineLogs(formLink: "https://docs.google.com/forms/d/1m-Zm4WNejE2gQa8DnnDE8aR07FTOzlBBcJgHX-eGO78/formResponse",
-            versionField: "entry_935409", userInfoField: "entry_279656771", methodInfoField: "entry_492594094", textField: "entry_453397443", forceField: "entry_1326940741")
+            versionField: "entry_935409", userInfoField: "entry_279656771", methodInfoField: "entry_492594094", textField: "entry_453397443", forceField: "entry_1326940741", targetForce: "entry_1507533875")
         QorumLogs.enabled = false // This should be disabled for OnlineLogs to work
         QorumOnlineLogs.enabled = true
         return true

@@ -55,7 +55,7 @@ class PlaygroundViewController: UIViewController
         }
         if(recognizer.state == .Changed) {
             touchArray.insert(recognizer.force, atIndex: i)
-            guard touchArray.count > 5 else {
+            guard touchArray.count > 7 else {
                 valueLabel.text = String(forceRoundingCGFloat((touchArray[i]))) + "%"
                 i++
                 return
@@ -81,13 +81,13 @@ class PlaygroundViewController: UIViewController
                 self.presentViewController(alert, animated: true, completion: nil)
             }
             if (roundCount == 10) {
-                let alert = UIAlertController(title: "Enough?", message: "Are you comfortable with the pressure input or do you want to try again?", preferredStyle: UIAlertControllerStyle.Alert)
+                let alert = UIAlertController(title: "Now Enough?", message: "Are you comfortable with the pressure input or do you want to try again?", preferredStyle: UIAlertControllerStyle.Alert)
                 alert.addAction(UIAlertAction(title: "Try Again", style: UIAlertActionStyle.Default, handler: nil))
                 alert.addAction(UIAlertAction(title: "Start Experiment", style: UIAlertActionStyle.Default, handler: handleExperimentStart))
                 self.presentViewController(alert, animated: true, completion: nil)
             }
             if (roundCount == 15) {
-                let alert = UIAlertController(title: "Enough?", message: "Let's start the Experiment!", preferredStyle: UIAlertControllerStyle.Alert)
+                let alert = UIAlertController(title: "Enough!", message: "Let's start the Experiment!", preferredStyle: UIAlertControllerStyle.Alert)
                 alert.addAction(UIAlertAction(title: "Start Experiment", style: UIAlertActionStyle.Default, handler: handleExperimentStart))
                 self.presentViewController(alert, animated: true, completion: nil)
             }
