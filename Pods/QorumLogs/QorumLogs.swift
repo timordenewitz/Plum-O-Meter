@@ -95,6 +95,10 @@ public struct QorumOnlineLogs {
     private static var googleFormErrorTextField: String!
     private static var googleFormErrorForceField: String!
     private static var googleFormErrorTargetForceField: String!
+    private static var googleFormErrorUserAgeField: String!
+    private static var googleFormErrorUserHandedField: String!
+    private static var googleFormErrorUsed3DTouchField: String!
+    private static var googleFormErrorUuidField: String!
 
     
     /// Online logs does not work while QorumLogs is enabled
@@ -120,22 +124,25 @@ public struct QorumOnlineLogs {
     }
 
     /// Setup Google Form links
-    public static func setupOnlineLogs(formLink formLink: String, versionField: String, userInfoField: String, methodInfoField: String, textField: String, forceField:String, targetForce: String) {
+    public static func setupOnlineLogs(formLink formLink: String, versionField: String, userInfoField: String, methodInfoField: String, textField: String, forceField:String, targetForceField: String, userAgeField: String, userHandedField: String, used3DTouchField: String, uuidField: String) {
         googleFormLink = formLink
         googleFormAppVersionField = versionField
         googleFormUserInfoField = userInfoField
         googleFormMethodInfoField = methodInfoField
         googleFormErrorTextField = textField
         googleFormErrorForceField = forceField
-        googleFormErrorTargetForceField = targetForce
-
+        googleFormErrorTargetForceField = targetForceField
+        googleFormErrorUserAgeField = userAgeField
+        googleFormErrorUserHandedField = userHandedField
+        googleFormErrorUsed3DTouchField = used3DTouchField
+        googleFormErrorUuidField = uuidField
     }
 
     //==========================================================================================================
     // MARK: - Private Methods
     //==========================================================================================================
 
-    private static func sendError<T>(classInformation classInformation: String, textObject: T, level: String, force: String, targetForce: String) {
+    private static func sendError<T>(classInformation classInformation: String, textObject: T, level: String, force: String, targetForce: String, userAge: String, userHanded: String, used3DTouch: String, uuid: String) {
         var text = ""
         if let stringObject = textObject as? String {
             text = stringObject
@@ -150,6 +157,10 @@ public struct QorumOnlineLogs {
         postData += "&" + googleFormErrorTextField + "=" + text
         postData += "&" + googleFormErrorForceField + "=" + force
         postData += "&" + googleFormErrorTargetForceField + "=" + targetForce
+        postData += "&" + googleFormErrorUserAgeField + "=" + userAge
+        postData += "&" + googleFormErrorUserHandedField + "=" + userHanded
+        postData += "&" + googleFormErrorUsed3DTouchField + "=" + used3DTouch
+        postData += "&" + googleFormErrorUuidField + "=" + uuid
 
 
         let request = NSMutableURLRequest(URL: url!)
@@ -205,7 +216,7 @@ public struct QorumOnlineLogs {
 //}
 
 ///General information about app state
-public func QL2<T>(info: T, force: String, targetForce: String, _ file: String = __FILE__, _ function: String = __FUNCTION__, _ line: Int = __LINE__) {
+public func QL2<T>(info: T, force: String, targetForce: String, userAge: String, userHanded: String, used3DTouch:String, uuid:String, _ file: String = __FILE__, _ function: String = __FUNCTION__, _ line: Int = __LINE__) {
     let level = 2
     let levelText = "2Info"
     let fileExtension = file.ns.lastPathComponent.ns.pathExtension
@@ -220,7 +231,7 @@ public func QL2<T>(info: T, force: String, targetForce: String, _ file: String =
         printLog(informationPart, text: info, level: level)
     } else if QorumOnlineLogs.shouldSendLine(level: level, fileName: filename) {
         let informationPart = "\(filename).\(function)[\(line)]"
-        QorumOnlineLogs.sendError(classInformation: informationPart, textObject: info, level: levelText, force: force, targetForce: targetForce)
+        QorumOnlineLogs.sendError(classInformation: informationPart, textObject: info, level: levelText, force: force, targetForce: targetForce, userAge: userAge, userHanded: userHanded, used3DTouch: used3DTouch, uuid: uuid)
     }
 }
 //

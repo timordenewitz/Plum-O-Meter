@@ -1,11 +1,3 @@
-//
-//  ViewController.swift
-//  Plum-o-Meter
-//
-//  Created by Simon Gladman on 24/10/2015.
-//  Copyright © 2015 Simon Gladman. All rights reserved.
-//
-
 import UIKit
 import QorumLogs
 import Foundation
@@ -13,7 +5,9 @@ import Foundation
 
 class ViewController: UIViewController
 {
+    //Declaring Variables
     var i: Int = 0
+    var numberOfExperimentsPassed :Int = 0
     var roundCounter :Int = 1
     var touchArray = [CGFloat]()
     var targetValues = [10, 20, 30, 40, 50, 60, 70, 80, 90]
@@ -21,11 +15,21 @@ class ViewController: UIViewController
     var userAge :String = ""
     var userHanded :String = ""
     var used3DTouch :Bool = false
-    
     var startTime: CFAbsoluteTime!
 
+    //The Users UUID
     let uuid = NSUUID().UUIDString
+    let numberOfExperimentsToPass :Int = 5
     
+    //All Messages to be Displayed
+    struct MyClassConstants{
+        static let WELCOME_MESSAGE = "Here, you have to try to match the 2 values by applying pressure on the Change Value Button."
+        static let THANK_YOU_MESSAGE = "Thanks for participating"
+        static let NEXT_EXPERIMENT = "Thanks for this one. It would be cool, if you can do another one!"
+
+    }
+    
+    //The Outlets
     @IBOutlet var forceButton: UIButton!
     @IBOutlet var sliderValueLabel: UILabel!
     @IBOutlet var targetValueLabel: UILabel!
@@ -42,7 +46,7 @@ class ViewController: UIViewController
     }
     
     override func viewDidAppear(animated: Bool) {
-        let alert = UIAlertController(title: "Welcome", message: "Here, you have to try to match the 2 values by applying pressure on the Change Value Button.", preferredStyle: UIAlertControllerStyle.Alert)
+        let alert = UIAlertController(title: "Welcome", message:MyClassConstants.WELCOME_MESSAGE , preferredStyle: UIAlertControllerStyle.Alert)
         alert.addAction(UIAlertAction(title: "All right", style: UIAlertActionStyle.Default, handler: nil))
         self.presentViewController(alert, animated: true, completion: nil)
         targetValueLabel.text = String(targetValues.first!) + "%"
@@ -76,10 +80,9 @@ class ViewController: UIViewController
         if(recognizer.state == .Ended) {
             let elapsedTime = CFAbsoluteTimeGetCurrent() - startTime
             guard touchArray.count > 7 else {
-                QL2(timeRounding(elapsedTime), force: String(forceRoundingCGFloat(touchArray[i-1])), targetForce: String(targetValues.first!))
+                QL2(timeRounding(elapsedTime), force: String(forceRoundingCGFloat(touchArray[i-1])), targetForce: String(targetValues.first!), userAge: userAge, userHanded: userHanded, used3DTouch: String(used3DTouch), uuid: uuid)
                 return
             }
-            addExtraLogInformation()
 
             if (targetValueLabel.text == sliderValueLabel.text) {
                 QorumOnlineLogs.extraInformation["matchedTargetValue"] = "true"
@@ -87,17 +90,21 @@ class ViewController: UIViewController
             else {
                 QorumOnlineLogs.extraInformation["matchedTargetValue"] = "false"
             }
-            QL2(timeRounding(elapsedTime), force: String(forceRoundingCGFloat(touchArray[i-7])), targetForce: String(targetValues.first!))
+            QL2(timeRounding(elapsedTime), force: String(forceRoundingCGFloat(touchArray[i-7])), targetForce: String(targetValues.first!), userAge: userAge, userHanded: userHanded, used3DTouch: String(used3DTouch), uuid: uuid)
             roundCounter++
             if (roundCounter < 10) {
                 showNextAlert()
                 return
             }
             showFinalAlert()
+            
+            if(numberOfExperimentsPassed == numberOfExperimentsToPass) {
+                showEndAlert();
+            }
         }
     }
     
-    func addExtraLogInformation() {
+    @available(*, deprecated=1.0) func addExtraLogInformation() {
         QorumOnlineLogs.extraInformation["age"] = userAge
         QorumOnlineLogs.extraInformation["handed"] = userHanded
         QorumOnlineLogs.extraInformation["3DTouch-Experiance"] = String(used3DTouch)
@@ -128,11 +135,24 @@ class ViewController: UIViewController
     }
     
     func showFinalAlert() {
-        let alert = UIAlertController(title: "Done", message: "Thanks for participating", preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction(UIAlertAction(title: "Done", style: UIAlertActionStyle.Default, handler: nil))
+        let alert = UIAlertController(title: "Experiment " + String(numberOfExperimentsPassed)+" done.", message: MyClassConstants.NEXT_EXPERIMENT + "Only " + String(numberOfExperimentsToPass - numberOfExperimentsPassed)+" left.", preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default, handler: nil))
         self.presentViewController(alert, animated: true, completion: nil)
         targetValueLabel.text = "---"
         sliderValueLabel.text = "---"
+        numberOfExperimentsPassed++
+    }
+    
+    func showEndAlert() {
+        let alert = UIAlertController(title: "You're done", message: MyClassConstants.THANK_YOU_MESSAGE , preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "Done", style: UIAlertActionStyle.Default, handler: handleExperimentEnd))
+        self.presentViewController(alert, animated: true, completion: nil)
+        targetValueLabel.text = "---"
+        sliderValueLabel.text = "---"
+    }
+    
+    func handleExperimentEnd(action :UIAlertAction) -> Void{
+        performSegueWithIdentifier("ThankYouSegue", sender: self)
     }
     
     override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask

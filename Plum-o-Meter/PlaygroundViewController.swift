@@ -1,11 +1,3 @@
-//
-//  ViewController.swift
-//  Plum-o-Meter
-//
-//  Created by Simon Gladman on 24/10/2015.
-//  Copyright © 2015 Simon Gladman. All rights reserved.
-//
-
 import UIKit
 import QorumLogs
 import Foundation

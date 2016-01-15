@@ -86,11 +86,55 @@
                         <outlet property="forceButton" destination="caW-S2-vMe" id="ZmY-Vh-ygD"/>
                         <outlet property="sliderValueLabel" destination="dby-iA-6Eq" id="jRC-1l-Bho"/>
                         <outlet property="targetValueLabel" destination="xqf-7Y-DuH" id="u86-Lx-un5"/>
+                        <segue destination="PJq-8Q-g22" kind="show" identifier="ThankYouSegue" id="2Ig-hF-Ihu"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2392.5" y="1199.5"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="EO2-As-H9D">
+            <objects>
+                <viewController id="PJq-8Q-g22" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="2pY-ev-xRP"/>
+                        <viewControllerLayoutGuide type="bottom" id="4lY-UK-ZXw"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="nEb-tA-H2W">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Thank you for participating" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g5D-Ed-5kq">
+                                <rect key="frame" x="56" y="176" width="263" height="225"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="38"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="now its time for cookies." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hLc-6m-ab3">
+                                <rect key="frame" x="39" y="339" width="297" height="21"/>
+                                <fontDescription key="fontDescription" type="system" weight="light" pointSize="19"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="g5D-Ed-5kq" firstAttribute="centerX" secondItem="hLc-6m-ab3" secondAttribute="centerX" id="88a-nF-f7k"/>
+                            <constraint firstItem="4lY-UK-ZXw" firstAttribute="top" secondItem="g5D-Ed-5kq" secondAttribute="bottom" constant="266" id="CNO-2o-Qan"/>
+                            <constraint firstItem="g5D-Ed-5kq" firstAttribute="leading" secondItem="nEb-tA-H2W" secondAttribute="leadingMargin" constant="40" id="MeM-a1-fA5"/>
+                            <constraint firstItem="g5D-Ed-5kq" firstAttribute="centerX" secondItem="nEb-tA-H2W" secondAttribute="centerX" id="T7H-Du-qQX"/>
+                            <constraint firstItem="hLc-6m-ab3" firstAttribute="top" secondItem="2pY-ev-xRP" secondAttribute="bottom" constant="275" id="WNH-Dy-Ucq"/>
+                            <constraint firstItem="hLc-6m-ab3" firstAttribute="leading" secondItem="nEb-tA-H2W" secondAttribute="leadingMargin" constant="23" id="Y3I-9Z-SE7"/>
+                            <constraint firstItem="4lY-UK-ZXw" firstAttribute="top" secondItem="hLc-6m-ab3" secondAttribute="bottom" constant="307" id="pE7-U6-Bp4"/>
+                            <constraint firstItem="g5D-Ed-5kq" firstAttribute="top" secondItem="2pY-ev-xRP" secondAttribute="bottom" constant="112" id="yS3-3g-czo"/>
+                        </constraints>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cDv-6u-zfv" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2857.5" y="1199.5"/>
         </scene>
         <!--StartScreen-->
         <scene sceneID="y77-go-thy">
