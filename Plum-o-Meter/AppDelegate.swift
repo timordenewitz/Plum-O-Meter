@@ -7,7 +7,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        QorumOnlineLogs.setupOnlineLogs(formLink: "https://docs.google.com/forms/d/1m-Zm4WNejE2gQa8DnnDE8aR07FTOzlBBcJgHX-eGO78/formResponse", versionField: "entry_935409", userInfoField: "entry_279656771", methodInfoField: "entry_492594094", textField: "entry_453397443", forceField: "entry_1326940741", targetForceField: "entry_1507533875", userAgeField: "entry_1132471491", userHandedField: "entry_1377018990", used3DTouchField: "entry_302073775", uuidField: "entry_2127357423")
+        QorumOnlineLogs.setupOnlineLogs(formLink: "https://docs.google.com/forms/d/1m-Zm4WNejE2gQa8DnnDE8aR07FTOzlBBcJgHX-eGO78/formResponse", versionField: "entry_935409", userInfoField: "entry_279656771", methodInfoField: "entry_492594094", textField: "entry_453397443", forceField: "entry_1326940741", targetForceField: "entry_1507533875", userAgeField: "entry_1132471491", userHandedField: "entry_1377018990", used3DTouchField: "entry_302073775", uuidField: "entry_2127357423", numberOfExperimentsPassedField: "entry_1992293764", matchedTargetValueField: "entry_1856907095")
         QorumLogs.enabled = false // This should be disabled for OnlineLogs to work
         QorumOnlineLogs.enabled = true
         return true

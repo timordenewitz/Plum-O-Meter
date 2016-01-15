@@ -7,7 +7,7 @@ class ViewController: UIViewController
 {
     //Declaring Variables
     var i: Int = 0
-    var numberOfExperimentsPassed :Int = 0
+    var numberOfExperimentsPassed :Int = 1
     var roundCounter :Int = 1
     var touchArray = [CGFloat]()
     var targetValues = [10, 20, 30, 40, 50, 60, 70, 80, 90]
@@ -16,6 +16,7 @@ class ViewController: UIViewController
     var userHanded :String = ""
     var used3DTouch :Bool = false
     var startTime: CFAbsoluteTime!
+    var matchedTargetValue : Bool = false
 
     //The Users UUID
     let uuid = NSUUID().UUIDString
@@ -37,11 +38,8 @@ class ViewController: UIViewController
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        
         view.multipleTouchEnabled = true
-        
         let deepPressGestureRecognizer = DeepPressGestureRecognizer(target: self, action: "deepPressHandler:", threshold: 0.0)
-        
         forceButton.addGestureRecognizer(deepPressGestureRecognizer)
     }
     
@@ -49,14 +47,13 @@ class ViewController: UIViewController
         let alert = UIAlertController(title: "Welcome", message:MyClassConstants.WELCOME_MESSAGE , preferredStyle: UIAlertControllerStyle.Alert)
         alert.addAction(UIAlertAction(title: "All right", style: UIAlertActionStyle.Default, handler: nil))
         self.presentViewController(alert, animated: true, completion: nil)
-        targetValueLabel.text = String(targetValues.first!) + "%"
+        setTargetValueToFirstOfArray()
     }
     
     func deepPressHandler(recognizer: DeepPressGestureRecognizer)
     {
         if(recognizer.state == .Began) {
             startTime = CFAbsoluteTimeGetCurrent()
-
         }
         if(recognizer.state == .Changed) {
             touchArray.insert(recognizer.force, atIndex: i)
@@ -74,32 +71,33 @@ class ViewController: UIViewController
             else {
                 sliderValueLabel.textColor = UIColor.darkGrayColor()
             }
-            
         }
         
         if(recognizer.state == .Ended) {
             let elapsedTime = CFAbsoluteTimeGetCurrent() - startTime
+            if (targetValueLabel.text == sliderValueLabel.text) {
+                matchedTargetValue = true
+            }
+            else {
+                matchedTargetValue = false
+            }
             guard touchArray.count > 7 else {
-                QL2(timeRounding(elapsedTime), force: String(forceRoundingCGFloat(touchArray[i-1])), targetForce: String(targetValues.first!), userAge: userAge, userHanded: userHanded, used3DTouch: String(used3DTouch), uuid: uuid)
+                QL2(timeRounding(elapsedTime), force: String(forceRoundingCGFloat(touchArray[i-1])), targetForce: String(targetValues.first!), userAge: userAge, userHanded: userHanded, used3DTouch: String(used3DTouch), uuid: uuid, numberOfExperimentsPassed: String(numberOfExperimentsPassed), matchedTargetValue: String(matchedTargetValue))
                 return
             }
 
-            if (targetValueLabel.text == sliderValueLabel.text) {
-                QorumOnlineLogs.extraInformation["matchedTargetValue"] = "true"
-            }
-            else {
-                QorumOnlineLogs.extraInformation["matchedTargetValue"] = "false"
-            }
-            QL2(timeRounding(elapsedTime), force: String(forceRoundingCGFloat(touchArray[i-7])), targetForce: String(targetValues.first!), userAge: userAge, userHanded: userHanded, used3DTouch: String(used3DTouch), uuid: uuid)
+            QL2(timeRounding(elapsedTime), force: String(forceRoundingCGFloat(touchArray[i-7])), targetForce: String(targetValues.first!), userAge: userAge, userHanded: userHanded, used3DTouch: String(used3DTouch), uuid: uuid, numberOfExperimentsPassed: String(numberOfExperimentsPassed), matchedTargetValue: String(matchedTargetValue))
+            sliderValueLabel.text = "0%"
             roundCounter++
             if (roundCounter < 10) {
                 showNextAlert()
                 return
             }
-            showFinalAlert()
-            
             if(numberOfExperimentsPassed == numberOfExperimentsToPass) {
                 showEndAlert();
+            }
+            else {
+                showFinalAlert()
             }
         }
     }
@@ -127,20 +125,23 @@ class ViewController: UIViewController
     }
     
     func showNextAlert() {
-        let alert = UIAlertController(title: "Round" + String(roundCounter), message: "And again, " + String(10-roundCounter) + " Rounds left!", preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction(UIAlertAction(title: "Okay, let's do this", style: UIAlertActionStyle.Default, handler: nil))
-        self.presentViewController(alert, animated: true, completion: nil)
+//        let alert = UIAlertController(title: "Round " + String(roundCounter), message: "And again, " + String(10-roundCounter) + " Rounds left!", preferredStyle: UIAlertControllerStyle.Alert)
+//        alert.addAction(UIAlertAction(title: "Okay, let's do this", style: UIAlertActionStyle.Default, handler: nil))
+//        self.presentViewController(alert, animated: true, completion: nil)
         targetValues.removeFirst(1)
-        targetValueLabel.text = String(targetValues.first!) + "%"
+        setTargetValueToFirstOfArray()
     }
     
     func showFinalAlert() {
-        let alert = UIAlertController(title: "Experiment " + String(numberOfExperimentsPassed)+" done.", message: MyClassConstants.NEXT_EXPERIMENT + "Only " + String(numberOfExperimentsToPass - numberOfExperimentsPassed)+" left.", preferredStyle: UIAlertControllerStyle.Alert)
+        let alert = UIAlertController(title: "Experiment " + String(numberOfExperimentsPassed)+" done.", message: MyClassConstants.NEXT_EXPERIMENT + " Only " + String(numberOfExperimentsToPass - numberOfExperimentsPassed)+" are left.", preferredStyle: UIAlertControllerStyle.Alert)
         alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default, handler: nil))
         self.presentViewController(alert, animated: true, completion: nil)
         targetValueLabel.text = "---"
         sliderValueLabel.text = "---"
         numberOfExperimentsPassed++
+        resetTargetValues()
+        resetRoundCounter()
+        setTargetValueToFirstOfArray()
     }
     
     func showEndAlert() {
@@ -155,11 +156,22 @@ class ViewController: UIViewController
         performSegueWithIdentifier("ThankYouSegue", sender: self)
     }
     
+    func resetRoundCounter() {
+        roundCounter = 1
+    }
+    
+    func resetTargetValues() {
+        targetValues = [10, 20, 30, 40, 50, 60, 70, 80, 90]
+    }
+    
+    func setTargetValueToFirstOfArray() {
+        targetValueLabel.text = String(targetValues.first!) + "%"
+    }
+    
     override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask
     {
         return UIInterfaceOrientationMask.Portrait
     }
-    
 }
 
 
