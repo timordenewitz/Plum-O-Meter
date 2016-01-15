@@ -2,7 +2,6 @@ import UIKit
 import QorumLogs
 import Foundation
 
-
 class ViewController: UIViewController
 {
     //Declaring Variables
@@ -20,14 +19,13 @@ class ViewController: UIViewController
 
     //The Users UUID
     let uuid = NSUUID().UUIDString
-    let numberOfExperimentsToPass :Int = 5
+    let numberOfExperimentsToPass :Int = 1
     
     //All Messages to be Displayed
     struct MyClassConstants{
         static let WELCOME_MESSAGE = "Here, you have to try to match the 2 values by applying pressure on the Change Value Button."
         static let THANK_YOU_MESSAGE = "Thanks for participating"
         static let NEXT_EXPERIMENT = "Thanks for this one. It would be cool, if you can do another one!"
-
     }
     
     //The Outlets
@@ -65,7 +63,7 @@ class ViewController: UIViewController
             sliderValueLabel.text = String(forceRoundingCGFloat((touchArray[i-7]))) + "%"
             i++
             
-            if (targetValueLabel.text == sliderValueLabel.text) {
+            if (targetValues.first! == forceRoundingCGFloat(touchArray[i-7])) {
                 sliderValueLabel.textColor = UIColor.greenColor()
             }
             else {
@@ -75,24 +73,24 @@ class ViewController: UIViewController
         
         if(recognizer.state == .Ended) {
             let elapsedTime = CFAbsoluteTimeGetCurrent() - startTime
-            if (targetValueLabel.text == sliderValueLabel.text) {
+
+            guard touchArray.count > 7 else {
+                QL2(timeRounding(elapsedTime), force: String(forceRoundingCGFloat(touchArray[i-1])), targetForce: String(targetValues.first!), userAge: userAge, userHanded: userHanded, used3DTouch: String(used3DTouch), uuid: uuid, numberOfExperimentsPassed: String(numberOfExperimentsPassed), matchedTargetValue: String(matchedTargetValue))
+                return
+            }
+            if (targetValues.first! == forceRoundingCGFloat(touchArray[i-7])) {
                 matchedTargetValue = true
             }
             else {
                 matchedTargetValue = false
             }
-            guard touchArray.count > 7 else {
-                QL2(timeRounding(elapsedTime), force: String(forceRoundingCGFloat(touchArray[i-1])), targetForce: String(targetValues.first!), userAge: userAge, userHanded: userHanded, used3DTouch: String(used3DTouch), uuid: uuid, numberOfExperimentsPassed: String(numberOfExperimentsPassed), matchedTargetValue: String(matchedTargetValue))
-                return
-            }
-
             QL2(timeRounding(elapsedTime), force: String(forceRoundingCGFloat(touchArray[i-7])), targetForce: String(targetValues.first!), userAge: userAge, userHanded: userHanded, used3DTouch: String(used3DTouch), uuid: uuid, numberOfExperimentsPassed: String(numberOfExperimentsPassed), matchedTargetValue: String(matchedTargetValue))
-            sliderValueLabel.text = "0%"
-            roundCounter++
+            prepareForNextRound()
             if (roundCounter < 10) {
                 showNextAlert()
-                return
+                return  
             }
+            
             if(numberOfExperimentsPassed == numberOfExperimentsToPass) {
                 showEndAlert();
             }
@@ -139,7 +137,7 @@ class ViewController: UIViewController
         targetValueLabel.text = "---"
         sliderValueLabel.text = "---"
         numberOfExperimentsPassed++
-        resetTargetValues()
+        setTargetValuesForRound(numberOfExperimentsPassed)
         resetRoundCounter()
         setTargetValueToFirstOfArray()
     }
@@ -160,8 +158,21 @@ class ViewController: UIViewController
         roundCounter = 1
     }
     
-    func resetTargetValues() {
-        targetValues = [10, 20, 30, 40, 50, 60, 70, 80, 90]
+    func setTargetValuesForRound(numberOfExperimentsPassed : Int) {
+        switch numberOfExperimentsPassed {
+        case 2:
+            targetValues = [19, 38, 84, 42, 63, 57, 95, 76, 21]
+        case 3:
+            targetValues =  [81, 43, 15, 99, 24, 62, 36, 78, 57]
+        default:
+            targetValues = [10, 20, 30, 40, 50, 60, 70, 80, 90]
+        }
+    }
+    
+    func prepareForNextRound() {
+        sliderValueLabel.text = "0%"
+        matchedTargetValue = false;
+        roundCounter++
     }
     
     func setTargetValueToFirstOfArray() {

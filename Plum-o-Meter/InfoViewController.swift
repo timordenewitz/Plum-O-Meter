@@ -11,8 +11,8 @@ import UIKit
 class InfoViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource{
 
     @IBOutlet var ageInput: UITextField!
-    @IBOutlet var used3DTouchSwitch: UISwitch!
     @IBOutlet var handednessTextField: UITextField!
+    @IBOutlet var used3DTouchSwitch: UISwitch!
     
     var pickerData: [String] = ["Right-Handed", "Left-Handed"]
     
@@ -28,6 +28,12 @@ class InfoViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
 
         handednessTextField.inputView = pickerView
 
+    }
+
+    @IBAction func handednessClickedHandler(sender: AnyObject) {
+        if(handednessTextField.text == "") {
+            handednessTextField.text = pickerData.first
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -67,6 +73,10 @@ class InfoViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
         theDestination.userAge = ageInput.text!
         theDestination.userHanded = userHanded
         theDestination.used3DTouch = used3DTouchSwitch.enabled
+    }
+    
+    @IBAction func prepareForUnwind(segue: UIStoryboardSegue){
+        
     }
 
 }
