@@ -11,7 +11,7 @@ import UIKit
 class InfoViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource{
 
     @IBOutlet var ageInput: UITextField!
-    @IBOutlet var pickerView: UIPickerView!
+    @IBOutlet var handednessTextField: UITextField!
     @IBOutlet var used3DTouchSwitch: UISwitch!
     
     var pickerData: [String] = ["Right-Handed", "Left-Handed"]
@@ -20,9 +20,20 @@ class InfoViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.pickerView.dataSource = self
-        self.pickerView.delegate = self
+        let pickerView = UIPickerView()
+        pickerView.delegate = self
+        pickerView.alpha = CGFloat(1)
+        pickerView.opaque = true
+        pickerView.backgroundColor = UIColor.whiteColor()
 
+        handednessTextField.inputView = pickerView
+
+    }
+
+    @IBAction func handednessClickedHandler(sender: AnyObject) {
+        if(handednessTextField.text == "") {
+            handednessTextField.text = pickerData.first
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -49,6 +60,7 @@ class InfoViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
     // Catpure the picker view selection
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         // This method is triggered whenever the user makes a change to the picker selection.
+        handednessTextField.text = pickerData[row]
         userHanded = pickerData[row]
     }
     
@@ -61,6 +73,10 @@ class InfoViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
         theDestination.userAge = ageInput.text!
         theDestination.userHanded = userHanded
         theDestination.used3DTouch = used3DTouchSwitch.enabled
+    }
+    
+    @IBAction func prepareForUnwind(segue: UIStoryboardSegue){
+        
     }
 
 }
