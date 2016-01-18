@@ -30,8 +30,9 @@ class InfoViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
         toolBar.tintColor = UIColor(red: 0, green: 122/255, blue: 1, alpha: 1)
         toolBar.sizeToFit()
         
+        let flexButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
         let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Plain, target: self, action: "donePicker")
-        toolBar.setItems([doneButton], animated: false)
+        toolBar.setItems([flexButton, doneButton], animated: true)
         toolBar.userInteractionEnabled = true
         
         handednessTextField.inputView = pickerView
