@@ -23,8 +23,19 @@ class InfoViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
         pickerView.alpha = CGFloat(1)
         pickerView.opaque = true
         pickerView.backgroundColor = UIColor.whiteColor()
-
+        
+        let toolBar = UIToolbar()
+        toolBar.barStyle = UIBarStyle.Default
+        toolBar.translucent = true
+        toolBar.tintColor = UIColor(red: 0, green: 122/255, blue: 1, alpha: 1)
+        toolBar.sizeToFit()
+        
+        let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Plain, target: self, action: "donePicker")
+        toolBar.setItems([doneButton], animated: false)
+        toolBar.userInteractionEnabled = true
+        
         handednessTextField.inputView = pickerView
+        handednessTextField.inputAccessoryView = toolBar
 
     }
 
@@ -39,6 +50,9 @@ class InfoViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
         // Dispose of any resources that can be recreated.
     }
 
+    func donePicker() {
+        UIApplication.sharedApplication().sendAction("resignFirstResponder", to:nil, from:nil, forEvent:nil)
+    }
     
     // The number of columns of data
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
