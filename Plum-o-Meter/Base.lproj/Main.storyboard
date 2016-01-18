@@ -180,18 +180,6 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5cz-26-MLk">
-                                <rect key="frame" x="116" y="586" width="143" height="40"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="40" id="PCN-Pa-f5U"/>
-                                    <constraint firstAttribute="width" constant="143" id="Tv6-qc-NNW"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="23"/>
-                                <state key="normal" title="Let's Go"/>
-                                <connections>
-                                    <segue destination="6Ld-ZS-lBF" kind="show" id="URH-ub-27d"/>
-                                </connections>
-                            </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Have you ever used 3D Touch before?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R6k-do-ohX">
                                 <rect key="frame" x="39" y="451" width="297" height="21"/>
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
@@ -231,6 +219,18 @@
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="vfn-bX-jSu">
                                 <rect key="frame" x="163" y="485" width="51" height="31"/>
                             </switch>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5cz-26-MLk">
+                                <rect key="frame" x="116" y="586" width="143" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="PCN-Pa-f5U"/>
+                                    <constraint firstAttribute="width" constant="143" id="Tv6-qc-NNW"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="23"/>
+                                <state key="normal" title="Let's Go"/>
+                                <connections>
+                                    <segue destination="6Ld-ZS-lBF" kind="show" id="URH-ub-27d"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
