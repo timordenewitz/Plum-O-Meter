@@ -16,8 +16,6 @@ class InfoViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
     
     var pickerData: [String] = ["Right-Handed", "Left-Handed"]
     
-    var userHanded :String = ""
-
     override func viewDidLoad() {
         super.viewDidLoad()
         let pickerView = UIPickerView()
@@ -61,7 +59,6 @@ class InfoViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         // This method is triggered whenever the user makes a change to the picker selection.
         handednessTextField.text = pickerData[row]
-        userHanded = pickerData[row]
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -71,12 +68,18 @@ class InfoViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let theDestination = (segue.destinationViewController as! PlaygroundViewController)
         theDestination.userAge = ageInput.text!
-        theDestination.userHanded = userHanded
-        theDestination.used3DTouch = used3DTouchSwitch.enabled
+        theDestination.userHanded =  handednessTextField.text!
+        theDestination.used3DTouch = used3DTouchSwitch.on
     }
     
     @IBAction func prepareForUnwind(segue: UIStoryboardSegue){
         
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        handednessTextField.text = ""
+        ageInput.text = ""
+        used3DTouchSwitch.setOn(false, animated: false)
     }
 
 }

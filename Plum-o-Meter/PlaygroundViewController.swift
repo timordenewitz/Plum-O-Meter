@@ -24,6 +24,7 @@ class PlaygroundViewController: UIViewController
     }
     
     var valueLabel: UILabel!
+    
     @IBOutlet var changeValueButton: UIButton!
     @IBOutlet var targetValueLabel: UILabel!
     @IBOutlet var sliderValueLabel: UILabel!
@@ -39,7 +40,6 @@ class PlaygroundViewController: UIViewController
         
         changeValueButton.addGestureRecognizer(deepPressGestureRecognizer)
         targetValueLabel.text = String(targetValues.first!) + "%"
-        targetValues.removeFirst(1)
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -62,7 +62,7 @@ class PlaygroundViewController: UIViewController
             }
             valueLabel.text = String(forceRoundingCGFloat((touchArray[i-7]))) + "%"
             
-            if (targetValueLabel.text == sliderValueLabel.text) {
+            if (forceRoundingCGFloat(touchArray[i-7]) >= targetValues.first! - 2   &&  forceRoundingCGFloat(touchArray[i-7]) <= targetValues.first! + 2 ) {
                 sliderValueLabel.textColor = UIColor.greenColor()
             }
             else {
@@ -74,30 +74,42 @@ class PlaygroundViewController: UIViewController
         if(recognizer.state == .Ended) {
             roundCount++
             
-            if(targetValues.count == 0) {
-                targetValues = [10, 20, 30, 40, 50, 60, 70, 80, 90]
-            }
-            targetValueLabel.text = String(targetValues.first!) + "%"
-            sliderValueLabel.text = "0%"
-            targetValues.removeFirst(1)
+            let seconds = 1.0
+            let delay = seconds * Double(NSEC_PER_SEC)  // nanoseconds per seconds
+            let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
             
-            if (roundCount == 5) {
-                let alert = UIAlertController(title: "Enough?", message: MyClassConstants.TRY_AGAIN_MESSAGE, preferredStyle: UIAlertControllerStyle.Alert)
-                alert.addAction(UIAlertAction(title: "Try Again", style: UIAlertActionStyle.Default, handler: nil))
-                alert.addAction(UIAlertAction(title: "Start Experiment", style: UIAlertActionStyle.Default, handler: handleExperimentStart))
-                self.presentViewController(alert, animated: true, completion: nil)
-            }
-            if (roundCount == 10) {
-                let alert = UIAlertController(title: "Now Enough?", message: MyClassConstants.TRY_AGAIN_MESSAGE, preferredStyle: UIAlertControllerStyle.Alert)
-                alert.addAction(UIAlertAction(title: "Try Again", style: UIAlertActionStyle.Default, handler: nil))
-                alert.addAction(UIAlertAction(title: "Start Experiment", style: UIAlertActionStyle.Default, handler: handleExperimentStart))
-                self.presentViewController(alert, animated: true, completion: nil)
-            }
-            if (roundCount == 15) {
-                let alert = UIAlertController(title: "Enough!", message: MyClassConstants.START_EXPERIMENT, preferredStyle: UIAlertControllerStyle.Alert)
-                alert.addAction(UIAlertAction(title: "Start Experiment", style: UIAlertActionStyle.Default, handler: handleExperimentStart))
-                self.presentViewController(alert, animated: true, completion: nil)
-            }
+            changeValueButton.enabled = false
+            
+            dispatch_after(dispatchTime, dispatch_get_main_queue(), {
+                
+                self.changeValueButton.enabled = true
+                self.sliderValueLabel.textColor = UIColor.darkGrayColor()
+
+                self.targetValues.removeFirst(1)
+                if(self.targetValues.count == 0) {
+                    self.targetValues = [10, 20, 30, 40, 50, 60, 70, 80, 90]
+                }
+                self.targetValueLabel.text = String(self.targetValues.first!) + "%"
+                self.sliderValueLabel.text = "0%"
+                
+                if (self.roundCount == 5) {
+                    let alert = UIAlertController(title: "Enough?", message: MyClassConstants.TRY_AGAIN_MESSAGE, preferredStyle: UIAlertControllerStyle.Alert)
+                    alert.addAction(UIAlertAction(title: "Try Again", style: UIAlertActionStyle.Default, handler: nil))
+                    alert.addAction(UIAlertAction(title: "Start Experiment", style: UIAlertActionStyle.Default, handler: self.handleExperimentStart))
+                    self.presentViewController(alert, animated: true, completion: nil)
+                }
+                if (self.roundCount == 10) {
+                    let alert = UIAlertController(title: "Now Enough?", message: MyClassConstants.TRY_AGAIN_MESSAGE, preferredStyle: UIAlertControllerStyle.Alert)
+                    alert.addAction(UIAlertAction(title: "Try Again", style: UIAlertActionStyle.Default, handler: nil))
+                    alert.addAction(UIAlertAction(title: "Start Experiment", style: UIAlertActionStyle.Default, handler: self.handleExperimentStart))
+                    self.presentViewController(alert, animated: true, completion: nil)
+                }
+                if (self.roundCount == 15) {
+                    let alert = UIAlertController(title: "Enough!", message: MyClassConstants.START_EXPERIMENT, preferredStyle: UIAlertControllerStyle.Alert)
+                    alert.addAction(UIAlertAction(title: "Start Experiment", style: UIAlertActionStyle.Default, handler: self.handleExperimentStart))
+                    self.presentViewController(alert, animated: true, completion: nil)
+                }
+            })
         }
     }
     
@@ -108,7 +120,8 @@ class PlaygroundViewController: UIViewController
     func showMoreInfo(action :UIAlertAction) -> Void{
         let alert = UIAlertController(title: "Selection", message: MyClassConstants.SELECTION_MESSAGE, preferredStyle: UIAlertControllerStyle.Alert)
         alert.addAction(UIAlertAction(title: "Alright", style: UIAlertActionStyle.Default, handler: nil))
-        self.presentViewController(alert, animated: true, completion: nil)    }
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
     
     func timeRounding(time : Double) -> String {
         let numberOfPlaces = 2.0
